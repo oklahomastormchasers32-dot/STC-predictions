@@ -2,115 +2,141 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>STC Forecast</title>
+<title>STC Convective Outlook</title>
 
 <style>
 body {
   margin: 0;
-  font-family: Arial;
+  font-family: Arial, Helvetica, sans-serif;
   background: #0b1a2a;
   color: white;
 }
 
+/* Header */
 header {
   background: #132c44;
-  padding: 15px;
-  font-size: 24px;
+  padding: 12px;
   text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+  border-bottom: 3px solid #2e6aa3;
 }
 
+/* Section box (SPC feel) */
 .day {
-  border-bottom: 2px solid #1f4e79;
-  padding: 20px;
+  margin: 15px;
+  border: 1px solid #2e6aa3;
+  background: #0f2438;
 }
 
+/* Day title */
 .day h2 {
-  margin-bottom: 10px;
+  margin: 0;
+  padding: 8px;
+  background: #1f4e79;
+  font-size: 16px;
+  border-bottom: 1px solid #2e6aa3;
 }
 
+/* Grid for images */
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 8px;
+  padding: 10px;
 }
 
 img {
   width: 100%;
-  border-radius: 8px;
+  border: 2px solid #2e6aa3;
 }
 
+/* Text discussion */
 .text {
-  margin-top: 10px;
-  background: #132c44;
   padding: 10px;
-  border-radius: 8px;
+  font-size: 14px;
+  border-top: 1px solid #2e6aa3;
+  background: #132c44;
 }
+
+/* Single image (day 3+) */
+.single {
+  padding: 10px;
+}
+
 </style>
 </head>
 
 <body>
 
-<header>STC Forecast</header>
+<header>STC Convective Outlook</header>
 
 <div id="forecast"></div>
 
 <script>
 fetch('data/forecast.json')
-  .then(res => res.json())
-  .then(data => {
+.then(res => res.json())
+.then(data => {
 
-    const container = document.getElementById('forecast');
+  const container = document.getElementById('forecast');
 
-    // DAY 1 + 2 FULL SPC STYLE
-    ["day1", "day2"].forEach(day => {
-      const d = data[day];
+  // DAY 1 & 2 (FULL SPC STYLE)
+  ["day1","day2"].forEach(day => {
+    const d = data[day];
 
-      container.innerHTML += `
-        <div class="day">
-          <h2>${day.toUpperCase()}</h2>
-          <div class="grid">
-            <img src="${d.tornado}">
-            <img src="${d.wind}">
-            <img src="${d.hail}">
-            <img src="${d.categorical}">
-          </div>
-          <div class="text">${d.text}</div>
-        </div>
-      `;
-    });
-
-    // DAY 3
-    const d3 = data.day3;
     container.innerHTML += `
       <div class="day">
-        <h2>DAY 3</h2>
-        <img src="${d3.categorical}">
-        <div class="text">${d3.text}</div>
-      </div>
-    `;
-
-    // DAY 4–6
-    ["day4","day5","day6"].forEach(day => {
-      const d = data[day];
-
-      container.innerHTML += `
-        <div class="day">
-          <h2>${day.toUpperCase()}</h2>
-          <img src="${d.map}">
-          <div class="text">${d.text}</div>
+        <h2>${day.toUpperCase()}</h2>
+        <div class="grid">
+          <img src="${d.tornado}">
+          <img src="${d.wind}">
+          <img src="${d.hail}">
+          <img src="${d.categorical}">
         </div>
-      `;
-    });
-
-    // DAY 9–14
-    const long = data.day9_14;
-    container.innerHTML += `
-      <div class="day">
-        <h2>DAY 9–14 OUTLOOK</h2>
-        <div class="text">${long.text}</div>
+        <div class="text">${d.text}</div>
       </div>
     `;
   });
+
+  // DAY 3
+  const d3 = data.day3;
+  container.innerHTML += `
+    <div class="day">
+      <h2>DAY 3</h2>
+      <div class="single">
+        <img src="${d3.categorical}">
+      </div>
+      <div class="text">${d3.text}</div>
+    </div>
+  `;
+
+  // DAY 4–8 (ROUGH MAP STYLE)
+  ["day4","day5","day6","day7","day8"].forEach(day => {
+    const d = data[day];
+
+    container.innerHTML += `
+      <div class="day">
+        <h2>${day.toUpperCase()}</h2>
+        <div class="single">
+          <img src="${d.map}">
+        </div>
+        <div class="text">${d.text}</div>
+      </div>
+    `;
+  });
+
+  // DAY 9–14
+  const long = data.day9_14;
+  container.innerHTML += `
+    <div class="day">
+      <h2>DAY 9–14 OUTLOOK</h2>
+      <div class="single">
+        <img src="${long.map}">
+      </div>
+      <div class="text">${long.text}</div>
+    </div>
+  `;
+});
 </script>
 
 </body>
