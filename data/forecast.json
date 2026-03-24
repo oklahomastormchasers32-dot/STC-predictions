@@ -1,0 +1,9 @@
+{
+  "day1": {
+    "text": "Severe storms expected across Oklahoma and Kansas.",
+    "tornado": "images/day1-tor.png",
+    "wind": "images/day1-wind.png",
+    "hail": "images/day1-hail.png",
+    "categorical": "images/day1-cat.png"
+  }
+}
