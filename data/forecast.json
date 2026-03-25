@@ -1,33 +1,120 @@
 {
   "day1": {
-    "text": "Day 1 forecast...",
+    "issued": "Mar 24 2026 1200Z",
+    "valid": "Mar 24 1300Z - Mar 25 1200Z",
+    "text": "Severe thunderstorms expected across parts of Oklahoma and Texas with all hazards possible.",
+    "cities": "Tulsa, OK MRGL | OKC SLGT | Dallas, TX ENH",
     "tornado": "images/day1-tor.png",
     "wind": "images/day1-wind.png",
     "hail": "images/day1-hail.png",
     "categorical": "images/day1-cat.png"
   },
+
   "day2": {
-    "text": "Day 2 forecast...",
+    "issued": "Mar 25 2026 0600Z",
+    "valid": "Mar 25 1200Z - Mar 26 1200Z",
+    "text": "Storms possible with damaging winds and large hail the primary threats.",
+    "cities": "Wichita, KS SLGT | Norman, OK MRGL",
     "tornado": "images/day2-tor.png",
     "wind": "images/day2-wind.png",
     "hail": "images/day2-hail.png",
     "categorical": "images/day2-cat.png"
   },
+
   "day3": {
-    "text": "Day 3 forecast...",
+    "issued": "Mar 26 2026 0730Z",
+    "valid": "Mar 26 1200Z - Mar 27 1200Z",
+    "text": "Predictability decreases but some severe risk may develop.",
+    "cities": "Kansas City, MO MRGL",
     "categorical": "images/day3.png"
   },
 
-  "day4": { "text": "Day 4...", "map": "images/day4.png" },
-  "day5": { "text": "Day 5...", "map": "images/day5.png" },
-  "day6": { "text": "Day 6...", "map": "images/day6.png" },
-  "day7": { "text": "Day 7...", "map": "images/day7.png" },
-  "day8": { "text": "Day 8...", "map": "images/day8.png" },
+  "day4": {
+    "issued": "Mar 27 2026 0830Z",
+    "valid": "Mar 27 - Mar 28",
+    "text": "Extended outlook suggests a low-end severe threat.",
+    "cities": "Central Plains 15% | Lower confidence areas",
+    "categorical": "images/day4-cat.png",
+    "prob": "images/day4-prob.png"
+  },
 
-  "day9": { "text": "Day 9...", "map": "images/day9.png" },
-  "day10": { "text": "Day 10...", "map": "images/day10.png" },
-  "day11": { "text": "Day 11...", "map": "images/day11.png" },
-  "day12": { "text": "Day 12...", "map": "images/day12.png" },
-  "day13": { "text": "Day 13...", "map": "images/day13.png" },
-  "day14": { "text": "Day 14...", "map": "images/day14.png" }
+  "day5": {
+    "issued": "Mar 28 2026",
+    "valid": "Mar 28 - Mar 29",
+    "text": "Probability too low at this time.",
+    "cities": "Too low",
+    "map": "images/day5.png"
+  },
+
+  "day6": {
+    "issued": "Mar 29 2026",
+    "valid": "Mar 29 - Mar 30",
+    "text": "Low confidence in severe development.",
+    "cities": "Too low",
+    "map": "images/day6.png"
+  },
+
+  "day7": {
+    "issued": "Mar 30 2026",
+    "valid": "Mar 30 - Mar 31",
+    "text": "Potential pattern shift, monitoring.",
+    "cities": "15% possible",
+    "map": "images/day7.png"
+  },
+
+  "day8": {
+    "issued": "Mar 31 2026",
+    "valid": "Mar 31 - Apr 1",
+    "text": "Extended uncertainty remains high.",
+    "cities": "Too low",
+    "map": "images/day8.png"
+  },
+
+  "day9": {
+    "issued": "Apr 1 2026",
+    "valid": "Apr 1 - Apr 2",
+    "text": "Long range outlook.",
+    "cities": "",
+    "map": "images/day9.png"
+  },
+
+  "day10": {
+    "issued": "Apr 2 2026",
+    "valid": "Apr 2 - Apr 3",
+    "text": "Long range outlook.",
+    "cities": "",
+    "map": "images/day10.png"
+  },
+
+  "day11": {
+    "issued": "Apr 3 2026",
+    "valid": "Apr 3 - Apr 4",
+    "text": "Long range outlook.",
+    "cities": "",
+    "map": "images/day11.png"
+  },
+
+  "day12": {
+    "issued": "Apr 4 2026",
+    "valid": "Apr 4 - Apr 5",
+    "text": "Long range outlook.",
+    "cities": "",
+    "map": "images/day12.png"
+  },
+
+  "day13": {
+    "issued": "Apr 5 2026",
+    "valid": "Apr 5 - Apr 6",
+    "text": "Long range outlook.",
+    "cities": "",
+    "map": "images/day13.png"
+  },
+
+  "day14": {
+    "issued": "Apr 6 2026",
+    "valid": "Apr 6 - Apr 7",
+    "text": "Long range outlook.",
+    "cities": "",
+    "map": "images/day14.png"
+  }
 }
