@@ -5,137 +5,178 @@
 <title>STC Convective Outlook</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: #0b1a2a;
-  color: white;
-}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0a2a4a;color:white}
+header{background:#123d6b;padding:10px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #2e6aa3}
+header h1{font-size:18px;margin:0}
+#pfp{width:38px;height:38px;border-radius:50%;border:2px solid white}
+#nav{display:flex;flex-wrap:wrap;justify-content:center;background:#0f2438;padding:5px;border-bottom:2px solid #2e6aa3}
+#nav button{margin:3px;padding:5px 8px;background:#1f4e79;color:white;border:none;cursor:pointer;font-size:12px}
+.container{max-width:1000px;margin:auto}
+.day{background:#0f355d;margin:10px;border:1px solid #2e6aa3}
+.day h2{margin:0;padding:6px;background:#1f4e79;font-size:14px}
+.meta{font-size:11px;padding:5px 8px;background:#0f2438;border-bottom:1px solid #2e6aa3}
+.single{padding:8px;position:relative}
+img{width:100%;border:2px solid #2e6aa3;opacity:1;transition:opacity 0.6s ease-in-out}
+.fade-out{opacity:0}
+.text{background:#123d6b;padding:8px;font-size:12px}
+.cities{font-size:11px;padding:6px;background:#0f2438;border-top:1px solid #2e6aa3}
+.layerBtns{padding:5px;text-align:center}
+.layerBtns button{margin:2px;padding:4px 6px;font-size:11px;background:#1f4e79;color:white;border:none;cursor:pointer}
+#auto{position:fixed;bottom:10px;right:10px;background:#1f4e79;padding:10px;border-radius:8px;cursor:pointer}
+/* MOBILE MODE */
+.mobile .container{max-width:100%;margin:0}
+.mobile .day{margin:5px}
+.mobile header h1{font-size:16px}
+.mobile #nav button{font-size:10px;padding:4px}
+.mobile .text{font-size:11px}
 
-/* Header */
-header {
-  background: #132c44;
-  padding: 12px;
-  text-align: center;
-  font-size: 22px;
-  font-weight: bold;
-  border-bottom: 3px solid #2e6aa3;
-}
-
-/* Section box (SPC feel) */
-.day {
-  margin: 15px;
-  border: 1px solid #2e6aa3;
-  background: #0f2438;
-}
-
-/* Day title */
-.day h2 {
-  margin: 0;
-  padding: 8px;
-  background: #1f4e79;
-  font-size: 16px;
-  border-bottom: 1px solid #2e6aa3;
-}
-
-/* Grid for images */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-  padding: 10px;
-}
-
-img {
-  width: 100%;
-  border: 2px solid #2e6aa3;
-}
-
-/* Text discussion */
-.text {
-  padding: 10px;
-  font-size: 14px;
-  border-top: 1px solid #2e6aa3;
-  background: #132c44;
-}
-
-/* Single image (day 3+) */
-.single {
-  padding: 10px;
+#mobileToggle{
+  position:fixed;
+  bottom:10px;
+  left:10px;
+  background:#1f4e79;
+  padding:10px;
+  border-radius:8px;
+  cursor:pointer;
 }
 
 </style>
 </head>
 
 <body>
+<header>
+  <h1>STC Convective Outlook</h1>
+  <img id="pfp" src="images/pfp.png">
+</header>
 
-<header>STC Convective Outlook</header>
-
-<div id="forecast"></div>
+<div id="nav"></div>
+<div class="container" id="forecast"></div>
+<div id="auto" onclick="startAuto()">▶ Auto</div>
+<div id="mobileToggle" onclick="toggleMobile()">📱 Mobile</div>
 
 <script>
-fetch('data/forecast.json')
-.then(res => res.json())
-.then(data => {
+let allDays=["day1","day2","day3","day4","day5","day6","day7","day8","day9","day10","day11","day12","day13","day14"];
+let currentIndex=0;let interval;let layerInterval;
 
-  const container = document.getElementById('forecast');
+fetch('data/forecast.json').then(res=>res.json()).then(data=>{
 
-  // DAY 1 & 2 (FULL SPC STYLE)
-  ["day1","day2"].forEach(day => {
-    const d = data[day];
+const container=document.getElementById('forecast');
+const nav=document.getElementById('nav');
 
-    container.innerHTML += `
+function fadeImageChange(img,newSrc){
+  img.classList.add('fade-out');
+  setTimeout(()=>{
+    img.src=newSrc;
+    img.classList.remove('fade-out');
+  },300);
+}
+
+function renderDay(day){
+  const d=data[day];
+  container.innerHTML='';
+
+  let meta=`<div class="meta">Issued: ${d.issued||"--"} | Valid: ${d.valid||"--"}</div>`;
+  let cities=`<div class="cities">${d.cities||""}</div>`;
+
+  if(day==="day1"||day==="day2"){
+    let layers={TOR:d.tornado,WIND:d.wind,HAIL:d.hail,CAT:d.categorical};
+
+    container.innerHTML=`
       <div class="day">
         <h2>${day.toUpperCase()}</h2>
-        <div class="grid">
-          <img src="${d.tornado}">
-          <img src="${d.wind}">
-          <img src="${d.hail}">
-          <img src="${d.categorical}">
+        ${meta}
+        <div class="layerBtns">
+          <button onclick="setLayer('${layers.TOR}')">TOR</button>
+          <button onclick="setLayer('${layers.WIND}')">WIND</button>
+          <button onclick="setLayer('${layers.HAIL}')">HAIL</button>
+          <button onclick="setLayer('${layers.CAT}')">CAT</button>
         </div>
+        <div class="single"><img id="layerImg" src="${layers.TOR}"></div>
+        ${cities}
         <div class="text">${d.text}</div>
-      </div>
-    `;
-  });
+      </div>`;
 
-  // DAY 3
-  const d3 = data.day3;
-  container.innerHTML += `
-    <div class="day">
-      <h2>DAY 3</h2>
-      <div class="single">
-        <img src="${d3.categorical}">
-      </div>
-      <div class="text">${d3.text}</div>
-    </div>
-  `;
+      clearInterval(layerInterval);
+      let arr=[layers.TOR,layers.WIND,layers.HAIL,layers.CAT];
+      let i=0;
+      layerInterval=setInterval(()=>{
+        i=(i+1)%arr.length;
+        fadeImageChange(document.getElementById('layerImg'),arr[i]);
+      },5000);
 
-  // DAY 4–8 (ROUGH MAP STYLE)
-  ["day4","day5","day6","day7","day8"].forEach(day => {
-    const d = data[day];
+      window.setLayer=function(src){
+        fadeImageChange(document.getElementById('layerImg'),src);
+      }
 
-    container.innerHTML += `
+  } else if(day==="day3"){
+    container.innerHTML=`
+      <div class="day">
+        <h2>DAY 3</h2>
+        ${meta}
+        <div class="layerBtns">
+          <button onclick="setLayer('${d.categorical}')">CAT</button>
+        </div>
+        <div class="single"><img id="layerImg" src="${d.categorical}"></div>
+        ${cities}
+        <div class="text">${d.text}</div>
+      </div>`;
+
+      window.setLayer=function(src){
+        fadeImageChange(document.getElementById('layerImg'),src);
+      }
+
+  } else if(day==="day4"){
+    container.innerHTML=`
+      <div class="day">
+        <h2>DAY 4</h2>
+        ${meta}
+        <div class="layerBtns">
+          <button onclick="setLayer('${d.categorical}')">CAT</button>
+          <button onclick="setLayer('${d.prob}')">PROB</button>
+        </div>
+        <div class="single"><img id="layerImg" src="${d.categorical}"></div>
+        ${cities}
+        <div class="text">${d.text}</div>
+      </div>`;
+
+      window.setLayer=function(src){
+        fadeImageChange(document.getElementById('layerImg'),src);
+      }
+
+  } else {
+    container.innerHTML=`
       <div class="day">
         <h2>${day.toUpperCase()}</h2>
-        <div class="single">
-          <img src="${d.map}">
-        </div>
+        ${meta}
+        <div class="single"><img src="${d.map}"></div>
+        ${cities}
         <div class="text">${d.text}</div>
-      </div>
-    `;
-  });
+      </div>`;
+  }
+}
 
-  // DAY 9–14
-  const long = data.day9_14;
-  container.innerHTML += `
-    <div class="day">
-      <h2>DAY 9–14 OUTLOOK</h2>
-      <div class="single">
-        <img src="${long.map}">
-      </div>
-      <div class="text">${long.text}</div>
-    </div>
-  `;
+allDays.forEach((day,index)=>{
+  nav.innerHTML+=`<button onclick="goDay(${index})">${day.replace('day','D')}</button>`;
+});
+
+window.goDay=function(index){
+  currentIndex=index;
+  renderDay(allDays[index]);
+}
+
+window.startAuto=function(){
+  clearInterval(interval);
+  interval=setInterval(()=>{
+    renderDay(allDays[currentIndex]);
+    currentIndex=(currentIndex+1)%allDays.length;
+  },5000);
+}
+
+renderDay("day1");
+
+window.toggleMobile=function(){
+  document.body.classList.toggle('mobile');
+}
 });
 </script>
 
